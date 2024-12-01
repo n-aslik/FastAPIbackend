@@ -5,7 +5,18 @@ from passlib.context import CryptContext
 from decouple import config
 from fastapi import HTTPException,Depends,status
 from fastapi.security import OAuth2PasswordBearer
-from ..database import pool
+import psycopg
+
+
+async def get_db():
+    global connect
+    connect = await psycopg.AsyncConnection.connect(
+        "postgresql://postgres:@@sl8998@localhost/bookblogdb"
+    )
+    try:
+        yield connect
+    finally:
+        await connect.close()
 
 
 
@@ -33,13 +44,12 @@ def create_access_token(data:dict,expires_delta:timedelta=None):
     return jwt.encode(token_encode,SECRET,algorithm=ALGORITHM)
 
 async def authenticate_user(username: str, password: str):
-    async with pool.connection() as conn:
-        async with conn.cursor() as curs:
-            result = await curs.execute("SELECT password FROM users WHERE username = %s", (username,))
-            user = await result.fetchone()
-            if user and verify_pswd(password, user["password"]):
-                return user
-            return None
+    async with connect.cursor() as curs:
+        result = await curs.execute("SELECT password FROM users WHERE username = %s", (username,))
+        user = await result.fetchone()
+        if user and verify_pswd(password, user["password"]):
+            return user
+        return None
 
 oauth_schene=OAuth2PasswordBearer(tokenUrl="login")
 async def get_current_user(token:str=Depends(oauth_schene)):

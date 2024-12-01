@@ -1,11 +1,11 @@
-from pydantic import BaseModel,EmailStr
+from pydantic import BaseModel
 from typing import Optional
 
 class User(BaseModel):
     id:int
     username:str
     password:str
-    email:EmailStr
+    email:str
     role:str
     isblocked:bool
     
@@ -17,7 +17,7 @@ class UserLogin(BaseModel):
     username:str
     password:str
     role:str
-    email:EmailStr
+    email:str
     
 class UserCheck(BaseModel):
     username:str
@@ -27,7 +27,7 @@ class UserCheck(BaseModel):
 class UserCreate(BaseModel):
     username:str
     password:str
-    email:EmailStr
+    email:str
     role:str
     isblocked:Optional[bool]
     
