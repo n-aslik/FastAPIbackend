@@ -1,0 +1,7 @@
+fastapi
+asyncpg
+uvicorn[standard]
+pyjwt
+python-decouple
+python-jose
+psycopg-pool
