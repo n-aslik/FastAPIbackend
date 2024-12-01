@@ -1,10 +1,14 @@
-import asyncio
-import psycopg
+from psycopg_pool import AsyncConnectionPool
+import os
 
-async def create_db():
-    db = await psycopg.AsyncConnection.connect(
-        "postgresql://username:@@sl8998@localhost/bookblogdb"
-    )
-    return db
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+async://postgres:@@sl8998@localhost:5432/bookblogdb")
+
+# Создание пула соединений
+db_pool = AsyncConnectionPool(DATABASE_URL)
+
+async def get_db_connection():
+    async with db_pool.connection() as conn:
+        yield conn
+
 
         
