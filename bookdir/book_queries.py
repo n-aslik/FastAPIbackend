@@ -1,7 +1,7 @@
 from fastapi import HTTPException,status
 from fastapi.responses import JSONResponse
-from .schema import DeleteBook,CreateBook,ResponseBook,PublishedBook,Book
-from ..main import pool
+from bookdir.schema import DeleteBook,CreateBook,ResponseBook,PublishedBook,Book
+from database import pool
 
 
 async def get_books(book:Book):

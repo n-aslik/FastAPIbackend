@@ -1,7 +1,7 @@
 from fastapi import APIRouter,Depends,HTTPException,status
-from ..usersdir.schema import UserLogin,Token
-from ..main import pool
-from.jwt_handler import hash_pswd,authenticate_user,create_access_token,get_current_user
+from usersdir.schema import UserLogin,Token
+from database import pool
+from jwt_handler import hash_pswd,authenticate_user,create_access_token,get_current_user
 
 router=APIRouter(prefix="/api",tags={"auth"})
 

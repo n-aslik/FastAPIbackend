@@ -1,7 +1,7 @@
 from fastapi import APIRouter,Depends 
-from .book_queries import get_books,get_book_by_id,create_books,update_book,delete_books,check_as_response,check_as_publish
-from ..bookdir.schema import Book,DeleteBook,CreateBook,ResponseBook,PublishedBook
-from ..auth.jwt_router import get_current_user
+from bookdir.book_queries import get_books,get_book_by_id,create_books,update_book,delete_books,check_as_response,check_as_publish
+from bookdir.schema import Book,DeleteBook,CreateBook,ResponseBook,PublishedBook
+from auth.jwt_router import get_current_user
 from typing import Annotated
 
 router=APIRouter(prefix="/api/books",tags=["books"])

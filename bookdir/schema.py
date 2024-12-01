@@ -1,6 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional,List
-from ..usersdir.schema import User
+from typing import Optional
 
 
 class Book(BaseModel):

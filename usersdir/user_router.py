@@ -1,7 +1,7 @@
 from fastapi import APIRouter,Depends
-from ..usersdir.schema import User,UserCreate,BlockUser
-from .user_queries import get_user_by_id,get_users,update_user,blocked
-from ..auth.jwt_handler import get_current_user
+from usersdir.schema import User,UserCreate,BlockUser
+from usersdir.user_queries import get_user_by_id,get_users,update_user,blocked
+from auth.jwt_handler import get_current_user
 from typing import Annotated
 
 router=APIRouter(

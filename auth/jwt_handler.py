@@ -1,11 +1,11 @@
 from jose import JWTError, jwt
-from fastapi import APIRouter
+from fastapi import APIRouter,Depends
 from datetime import datetime,timedelta
 from passlib.context import CryptContext
 from decouple import config
 from fastapi import HTTPException,Depends,status
 from fastapi.security import OAuth2PasswordBearer
-from ..main import pool
+from database import pool
 
 
 
