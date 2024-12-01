@@ -1,24 +1,24 @@
 from fastapi import APIRouter,Depends
-from usersdir.schema import User,UserCreate,BlockUser
-from usersdir.user_queries import get_user_by_id,get_users,update_user,blocked
-from auth.jwt_handler import get_current_user
-from typing import Annotated
+from .schema import User,UserCreate,BlockUser
+from .user_queries import get_user_by_id,get_users,update_user,blocked
+from ..auth.jwt_handler import get_current_user
+
 
 router=APIRouter(
     prefix="/api/users",tags=["users"]
 
 )
-@router.get("/")
-async def print_user(user:Annotated[User,Depends(get_current_user)])->list[User]:
+@router.get("/",response_model=User)
+async def print_user(user:User=Depends(get_current_user)):
     return await get_users(user=user)
-@router.get("/{id}")
-async def print_user_by_id(id:int,user:Annotated[User,Depends(get_current_user)])->User:
+@router.get("/{id}",response_model=User)
+async def print_user_by_id(id:int,user:User=Depends(get_current_user)):
     return await get_user_by_id(id=id,user=user)
-@router.put("/{id}")
-async def edit_user(id:int,user:Annotated[UserCreate,Depends(get_current_user)])->UserCreate:
+@router.put("/{id}",response_model=UserCreate)
+async def edit_user(id:int,user:UserCreate=Depends(get_current_user)):
     return await update_user(user=user,id=id)
-@router.patch("/{id}")
-async def block_user(id:int,user:Annotated[BlockUser,Depends(get_current_user)])->BlockUser:
+@router.patch("/{id}",response_model=BlockUser)
+async def block_user(id:int,user:BlockUser=Depends(get_current_user)):
     return await blocked(id=id,user=user)
 
 

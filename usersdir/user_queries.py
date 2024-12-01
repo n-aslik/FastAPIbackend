@@ -1,7 +1,7 @@
 from fastapi.responses import JSONResponse
 from fastapi import HTTPException
-from usersdir.schema import UserCreate,BlockUser,User
-from database import pool
+from .schema import UserCreate,BlockUser,User
+from ..database import pool
 
 
 # user_perm=get_current_user()

@@ -1,8 +1,7 @@
 from psycopg_pool import AsyncConnectionPool
 
-
 postgres_url ="postgresql://postgres:@@sl8998@localhost/bookblogdb"
-
+pool:AsyncConnectionPool=None
 async def get_connect_db():
     global pool
     pool=AsyncConnectionPool(conninfo=postgres_url)

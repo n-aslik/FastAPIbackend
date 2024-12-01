@@ -5,7 +5,7 @@ from passlib.context import CryptContext
 from decouple import config
 from fastapi import HTTPException,Depends,status
 from fastapi.security import OAuth2PasswordBearer
-from database import pool
+from ..database import pool
 
 
 
