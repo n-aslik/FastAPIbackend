@@ -1,7 +1,7 @@
 from psycopg_pool import AsyncConnectionPool
 import os
 
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+async://postgres:@@sl8998@localhost:5432/bookblogdb")
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 # Создание пула соединений
 db_pool = AsyncConnectionPool(DATABASE_URL)
