@@ -5,7 +5,7 @@ from passlib.context import CryptContext
 from decouple import config
 from fastapi import HTTPException,Depends,status
 from fastapi.security import OAuth2PasswordBearer
-from ..database import create_db
+from ..main import pool
 
 
 
@@ -32,15 +32,16 @@ def create_access_token(data:dict,expires_delta:timedelta=None):
     token_encode.update({"exp":expire})
     return jwt.encode(token_encode,SECRET,algorithm=ALGORITHM)
 
-async def authenticate_user(username: str, password: str,db=Depends(create_db) ):
-    result = await db.execute("SELECT password FROM users WHERE username = %s", (username,))
-    user = await result.fetchone()
-    if user and verify_pswd(password, user["password"]):
-        return user
-    return None
+async def authenticate_user(username: str, password: str):
+    async with pool.connection() as conn:
+        async with conn.cursor() as curs:
+            result = await curs.execute("SELECT password FROM users WHERE username = %s", (username,))
+            user = await result.fetchone()
+            if user and verify_pswd(password, user["password"]):
+                return user
+            return None
 
 oauth_schene=OAuth2PasswordBearer(tokenUrl="login")
-
 async def get_current_user(token:str=Depends(oauth_schene)):
     try:
         payload=jwt.decode(token,SECRET,algorithms=[ALGORITHM])
