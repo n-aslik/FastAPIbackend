@@ -1,8 +1,8 @@
-from fastapi import HTTPException,Depends
 from fastapi.responses import JSONResponse
-from .schema import UserCreate,BlockUser,User
+from fastapi import HTTPException
+from ..usersdir.schema import UserCreate,BlockUser,User
 from ..main import pool
-from ..auth.jwt_handler import get_current_user
+
 
 # user_perm=get_current_user()
 # for i in user_perm[u]
