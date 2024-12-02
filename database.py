@@ -1,10 +1,14 @@
 import psycopg
-from psycopg_pool import AsyncConnectionPool
-from functools import lru_cache
+from psycopg.rows import dict_row
 
-db_url="user=posrgres password=@@sl8998 host=localhost port=5432 db_name=bookblogdb"
-
-@lru_cache
-def async_get_db():
-    return AsyncConnectionPool(conninfo=db_url)
+db_parameter={
+    "user":"postgres",
+    "password":"@@sl8998",
+    "host":"localhost",
+    "port":5432,
+}
+async def  async_get_db():
+    conn=  psycopg.connect(**db_parameter,autocommit=False,row_factory=dict_row)
+    return conn
+    
 
