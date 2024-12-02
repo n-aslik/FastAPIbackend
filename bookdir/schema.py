@@ -18,10 +18,6 @@ class CreateBook(BaseModel):
     comment:Optional[str]=None
     janr:str
     
-    
-class DeleteBook(BaseModel):
-    id:int
-
 class ResponseBook(BaseModel):
     isresponse:Optional[bool]
 class PublishedBook(BaseModel):

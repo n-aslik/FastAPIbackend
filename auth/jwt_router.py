@@ -1,26 +1,20 @@
 from fastapi import APIRouter,Depends,HTTPException,status
 from ..usersdir.schema import UserLogin,Token,UserCheck
 from .jwt_handler import hash_pswd,authenticate_user,create_access_token,get_current_user
-import psycopg
+from ..database import async_get_db
+from psycopg.rows import class_row
+
+async_pool=async_get_db()
 
 router=APIRouter(prefix="/api",tags={"auth"})
 
-async def get_db():
-    global connect
-    connect = await psycopg.AsyncConnection.connect(
-        "postgresql://postgres:@@sl8998@localhost/bookblogdb"
-    )
-    try:
-        yield connect
-    finally:
-        await connect.close()
 
 
 @router.post("/sign-up")
 async def sign_up(user:UserLogin):
-    async with connect.cursor() as curs:
+    async with async_pool.connection() as curs:
         hash_password=hash_pswd(user.password)
-        await curs.execute("INSERT INTO users (username, password) VALUES (%s, %s)", (user.username, hash_password))
+        await curs.execute("INSERT INTO users (username, password,role,email) VALUES (%s, %s,%s,%s)", [user.username, hash_password,user.role,user.email])
         return {"message":"user add successful"}
     
 @router.post("/sign-in",response_model=Token)
