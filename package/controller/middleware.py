@@ -1,6 +1,5 @@
 from fastapi.security import HTTPBearer,HTTPAuthorizationCredentials
-from fastapi import HTTPException,Depends,Security,status
-from package.service.jwt_hand import Payloads
+from fastapi import HTTPException,Security,status
 from package.service.jwt_hand import parse_token
 
 security=HTTPBearer()
@@ -11,6 +10,4 @@ async def checkautherization(sec_route:HTTPAuthorizationCredentials=Security(sec
     if not token:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="Token is empty")
     return await parse_token(token)
-    
-    
-    
+   

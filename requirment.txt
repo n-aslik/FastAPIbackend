@@ -5,3 +5,6 @@ pyjwt
 python-decouple
 python-jose
 psycopg-pool
+qrcode==8.0  
+pyqrcode
+pillow
