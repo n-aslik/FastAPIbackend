@@ -1,6 +1,5 @@
-from fastapi import Depends,HTTPException, status
+from fastapi import HTTPException, status
 import jwt
-from typing import Optional
 from datetime import datetime,timedelta
 from os import getenv
 from pydantic import BaseModel
@@ -16,15 +15,15 @@ class Payloads(BaseModel):
     user_id:int
     username:str
     role:str
-    otp_veryfied:str
+    otp_verify:str
     exp:datetime
 
-async def create_access_token (user_id:int,username:str,role:str,otp_veryfied:str)->str:
+async def create_access_token (user_id:int,username:str,role:str,otp_verify:str)->str:
     payload=Payloads(
         user_id=user_id,
         username=username,
         role=role,
-        otp_veryfied=otp_veryfied,
+        otp_verify=otp_verify,
         exp=(datetime.now()+timedelta(minutes=30))
     ).model_dump()
     encoded_token=jwt.encode(payload,jwt_secret,algorithm=jwt_algorithm)

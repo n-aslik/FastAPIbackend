@@ -10,7 +10,7 @@ async def sign_in(username: str, password: str):
         user["id"],
         user["username"],
         user["role"],
-        user["otp_veryfied"]
+        user["otp_verify"]
     )
     return {"access_token": access_token}
 
