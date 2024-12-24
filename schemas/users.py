@@ -15,7 +15,6 @@ class UpdateUser(BaseModel):
     username:Optional[str]=None
     password:Optional[str]=None
     
-    
 class Sign_Up(BaseModel):
     username:str
     password:str
@@ -30,7 +29,3 @@ class Sign_in(BaseModel):
     username:str
     password:str
    
-class Block_User(BaseModel):
-    isblocked:Optional[bool]=None
-    
-    
