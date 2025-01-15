@@ -5,6 +5,7 @@ from package.service.auth import sign_in
 from package.repository import user_queries
 from package.controller import middleware
 import random
+from datetime import datetime,timedelta
 
 
 
@@ -13,7 +14,8 @@ router=APIRouter(prefix="/api",tags=["auth"])
 @router.post("/sign-up",response_model=users.Registrer)
 async def sign_up(user:users.Sign_Up=Depends())->Any:
     otp="".join(str(random.randint(0,9))for _ in range(6))
-    await user_queries.create_user(user.username,user.password,otp)
+    exp_at=datetime.now()+timedelta(minutes=5)
+    await user_queries.create_user(user.username,user.password,otp,exp_at)
     return {"username":user.username,"password":"****","otp":otp}
     
 @router.post("/sign-in",response_model=None)

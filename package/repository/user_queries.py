@@ -3,18 +3,21 @@ from database.dbconn import async_get_db
 from asyncpg  import Connection
 import json
 from utils import hash
+import datetime
 
 
-async def create_user(username:str,password:str,otp:str):
+async def create_user(username:str,password:str,otp:str,exp:datetime):
     db:Connection=await async_get_db()
     hash_password=await hash.hashed_password(password)
+    hash_otp=await hash.hashed_password(otp)
     await get_user_by_uname_and_password(username,password)
-    await update_otp(otp,username)
-    await db.execute("CALL authuser.create_user($1,$2,$3);",username,hash_password,otp)
+    await update_otp(hash_otp,username)
+    await db.execute("CALL authuser.create_user($1,$2,$3,$4);",username,hash_password,hash_otp,exp)
 
-async def update_user(username:str,password:str,id:int):
+async def update_user(username:str,password:str,role:str,id:int):
     db:Connection=await async_get_db()
-    await db.execute("CALL authuser.update_user($1,$2,$3);",username,password,id)
+    hash_password=await hash.hashed_password(password)
+    await db.execute("CALL authuser.update_user($1,$2,$3,$4);",username,hash_password,role,id)
     
 async def get_otp(uotp:str):
     db:Connection=await async_get_db()

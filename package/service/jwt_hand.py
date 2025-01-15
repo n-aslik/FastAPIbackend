@@ -24,7 +24,7 @@ async def create_access_token (user_id:int,username:str,role:str,otp_verify:str)
         username=username,
         role=role,
         otp_verify=otp_verify,
-        exp=(datetime.now()+timedelta(minutes=30))
+        exp=(datetime.now()+timedelta(minutes=15))
     ).model_dump()
     encoded_token=jwt.encode(payload,jwt_secret,algorithm=jwt_algorithm)
     return encoded_token

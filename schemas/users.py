@@ -14,6 +14,7 @@ class User(BaseModel):
 class UpdateUser(BaseModel):
     username:Optional[str]=None
     password:Optional[str]=None
+    role:Optional[str]="user"
     
 class Sign_Up(BaseModel):
     username:str

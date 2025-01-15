@@ -8,3 +8,4 @@ psycopg-pool
 qrcode==8.0  
 pyqrcode
 pillow
+aiortc

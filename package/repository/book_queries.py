@@ -1,6 +1,5 @@
 from fastapi import HTTPException,status
 from schemas.books import CreateBook
-from fastapi.responses import JSONResponse
 from database.dbconn import async_get_db
 from asyncpg import Connection
 import json
@@ -27,7 +26,7 @@ async def get_book_by_id(id:int,resp:bool,pub:bool):
     
 async def create_books(book:CreateBook):
     db:Connection= await async_get_db()
-    await db.execute("CALL authuser.create_books($1,$2,$3,$4,$5)",book.title,book.description,book.user_id,book.comment,book.janr)
+    await db.execute("CALL authuser.create_book($1,$2,$3,$4,$5)",book.title,book.description,book.user_id,book.comment,book.janr)
     return{"title":book.title,"description":book.description,"user_id":book.user_id,"comment":book.comment,"janr":book.janr}
     
     
