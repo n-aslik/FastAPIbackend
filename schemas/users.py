@@ -18,11 +18,7 @@ class UpdateUser(BaseModel):
 class Signs(BaseModel):
     username: str
     password: str
-    
-    
-class ChangePassword(BaseModel):
-    password: str
-    
+    role: Optional[str] = "user"
 
 
    

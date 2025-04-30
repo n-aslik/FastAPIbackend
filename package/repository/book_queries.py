@@ -12,7 +12,7 @@ async def get_books(isresp:bool,ispub:bool):
         cur.execute("SELECT authuser.get_all_books(%s, %s) ", (isresp,ispub))
         books = cur.fetchone()[0]
         return books
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail = f"{books}")
     
          
 async def get_book_by_id(id:int,resp:bool,pub:bool):
@@ -21,7 +21,7 @@ async def get_book_by_id(id:int,resp:bool,pub:bool):
         cur.execute("SELECT authuser.get_book_by_id(%s, %s, %s) ", (resp, pub,id))
         books = cur.fetchone()[0]
         return books
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail = f"{books}")
     
     
 async def create_books(book:CreateBook):
@@ -31,7 +31,7 @@ async def create_books(book:CreateBook):
         books = cur.fetchone()[0]
         if books['status'] == 0:
             return books
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail = f"{books}")
     
     
     
@@ -42,7 +42,7 @@ async def delete_books(id:int):
         books = cur.fetchone()[0]
         if books['status'] == 0:
             return books
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail = f"{books}")
     
     
     
@@ -53,7 +53,7 @@ async def update_book(id: int, books: CreateBook):
         books = cur.fetchone()[0]
         if books['status'] == 0:
             return books
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail = f"{books}")
     
     
     
@@ -64,7 +64,7 @@ async def check_as_response(id:int):
         books = cur.fetchone()[0]
         if books['status'] == 0:
             return books
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail = f"{books}")
     
     
     
@@ -75,7 +75,7 @@ async def check_as_publish(id:int):
         books = cur.fetchone()[0]
         if books['status'] == 0:
             return books
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail = f"{books}")
     
     
         
