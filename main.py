@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from package.controller.book_router import router as b_router
 from package.controller.user_router import router as u_router
-from database.dbconn import async_get_db
+from package.controller.book_router import router as b_router
 from package.controller.auth import router as a_router
+from database.dbconn import async_get_db
 from os import getenv
 
 
