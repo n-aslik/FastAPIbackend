@@ -9,24 +9,16 @@ class User(BaseModel):
     password:Optional[str]
     role:Optional[str]
     isblocked:Optional[bool]=None
-    otp_verify:Optional[str]
-
+    
 class UpdateUser(BaseModel):
     username:Optional[str]=None
     password:Optional[str]=None
     role:Optional[str]="user"
     
-class Sign_Up(BaseModel):
+class Signs(BaseModel):
     username:str
     password:str
     
-class Registrer(BaseModel):
-    username:str
-    password:str
-    otp:str
-    
-    
-class Sign_in(BaseModel):
-    username:str
-    password:str
+
+
    

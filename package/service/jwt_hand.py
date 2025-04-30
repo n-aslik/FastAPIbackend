@@ -15,26 +15,22 @@ class Payloads(BaseModel):
     user_id:int
     username:str
     role:str
-    otp_verify:str
-    exp:datetime
 
-async def create_access_token (user_id:int,username:str,role:str,otp_verify:str)->str:
+async def create_access_token (user_id:int,username:str,role:str)->str:
     payload=Payloads(
         user_id=user_id,
         username=username,
         role=role,
-        otp_verify=otp_verify,
         exp=(datetime.now()+timedelta(minutes=15))
     ).model_dump()
     encoded_token=jwt.encode(payload,jwt_secret,algorithm=jwt_algorithm)
     return encoded_token
 
-async def create_refresh_token (user_id:int,username:str,role:str,otp_verify:str)->str:
+async def create_refresh_token (user_id:int,username:str,role:str)->str:
     payload=Payloads(
         user_id=user_id,
         username=username,
         role=role,
-        otp_verify=otp_verify,
         exp=(datetime.now()+timedelta(days=7))
     ).model_dump()
     encoded_token=jwt.encode(payload,jwt_secret,algorithm=jwt_algorithm)
