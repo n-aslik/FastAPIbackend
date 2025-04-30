@@ -10,11 +10,11 @@ router=APIRouter(
 )
 
 
-@router.get("/{id}",response_model=None,dependencies=[Depends(middleware.checkautherization)])
+@router.get("/user",response_model=None,dependencies=[Depends(middleware.checkautherization)])
 async def print_user_by_id(user:Payloads=Depends(middleware.checkautherization))->Any:
     return await user_queries.get_user_by_id(user.user_id)
 
-@router.put("/{id}",response_model=None,dependencies=[Depends(middleware.checkautherization)])
+@router.put("/user",response_model=None,dependencies=[Depends(middleware.checkautherization)])
 async def edit_user(uuser:users.UpdateUser=Depends(),user:Payloads=Depends(middleware.checkautherization))->Any:
     if user.user_id==1:
         uuser.role="admin"

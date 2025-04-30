@@ -1,38 +1,59 @@
 from fastapi import HTTPException,status
 from database.dbconn import async_get_db
 from asyncpg  import Connection
-import json
+from package.service.jwt_hand import create_access_token, create_refresh_token
+from schemas import users
 from utils import hash
 import datetime
 
 
-async def create_user(username:str,password:str):
-    db:Connection=await async_get_db()
-    hash_password=await hash.hashed_password(password)
-    users = await db.execute("CALL authuser.create_user($1, $2, $3);",username,hash_password,'{}')
-    if users['status'] == 0:
-        return users
+async def create_user(data: users.User):
+    with async_get_db() as db:
+        cur = db.cursor()
+        hash_password = await hash.hashed_password(data.password)
+        cur.execute("CALL authuser.create_user(%s, %s, %s);",(data.username, hash_password, '{}'))
+        users = cur.fetchone()[0]
+        if users['status'] == 0:
+            return users
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
 
-async def update_user(username:str,password:str,role:str,id:int):
-    db:Connection=await async_get_db()
-    hash_password=await hash.hashed_password(password)
-    users = await db.execute("CALL authuser.update_user($1, $2, $3, $4, $5);",username, hash_password, role, id, '{}')
-    if users['status'] == 0:
-        return users
+async def update_user(id:int, data: users.UpdateUser):
+    with async_get_db() as db:
+        cur = db.cursor()
+        hash_password=await hash.hashed_password(data.password)
+        cur.execute("CALL authuser.update_user(%s, %s, %s, %s, %s);" ,(data.username, hash_password, role, id, '{}'))
+        users = cur.fetchone()[0]
+        if users['status'] == 0:
+            return users
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
 
+async def change_password(username:str, data: users.ChangePassword):
+    with async_get_db() as db:
+        cur = db.cursor()
+        hash_password=await hash.hashed_password(data.password)
+        cur.execute("CALL authuser.change_password(%s, %s, %s);" ,(username, hash_password, '{}'))
+        users = cur.fetchone()[0]
+        if users['status'] == 0:
+            return users
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
 
-async def get_user_by_uname_and_password(username: str, password: str):
-    db: Connection = await async_get_db()
-    users = await db.fetchval("SELECT authuser.get_user_by_username_and_password($1, $2);", username, password)
-    if not users:
-        raise ValueError("User not found or incorrect password")
-    return users
+async def login(data: users.Signs):
+    with async_get_db() as db:
+        cur = db.cursor()
+        cur.execute("CALL authuser.login(%s, %s, %s);" ,(data.username, data.password, '{}'))
+        users = cur.fetchone()[0]
+        if users['status'] == 0:
+            users['access_token'] = create_access_token(users['id'], data.username, users['role'] )
+            users['refresh_token'] = create_refresh_token(users['id'], data.username, users['role'] )
+            return users
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
 
 async def get_user_by_id(id:int):
-    db:Connection=await async_get_db()
-    users=await db.fetchval("SELECT  authuser.get_user_by_id($1);",id)
-    if not users:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-    users["password"]="****"
-    return users
+    with async_get_db() as db:
+        cur = db.cursor()
+        cur.execute("SELECT  authuser.get_user_by_id(%s);", (id,))
+        users = cur.fetchone()[0]
+        users["password"]="****"
+        return users
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
       

@@ -9,7 +9,7 @@ from os import getenv
 
 
 app=FastAPI()
-async def async_get_database():
+def async_get_database():
     conn=async_get_db()
     try:
         yield conn
