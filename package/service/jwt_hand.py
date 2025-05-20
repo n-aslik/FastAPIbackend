@@ -16,7 +16,7 @@ class Payloads(BaseModel):
     username: str
     role:str
 
-def create_access_token (user_id:int, username:str, password:str, role:str)->str:
+def create_access_token (user_id:int, username:str, role:str)->str:
     payload=Payloads(
         user_id = user_id,
         username = username,
@@ -26,7 +26,7 @@ def create_access_token (user_id:int, username:str, password:str, role:str)->str
     encoded_token=jwt.encode(payload,jwt_secret,algorithm=jwt_algorithm)
     return encoded_token
 
-def create_refresh_token (user_id:int, username:str, password: str, role:str)->str:
+def create_refresh_token (user_id:int, username:str, role:str)->str:
     payload=Payloads(
         user_id=user_id,
         username=username,

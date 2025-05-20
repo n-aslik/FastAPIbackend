@@ -1,9 +1,9 @@
 from fastapi import APIRouter,Depends ,Path,Query
-from package.repository import book_queries
-from schemas import books
+from ..repository import book_queries
+from ..schemas import books
 from typing import Any
-from package.controller import middleware
-from package.service.jwt_hand import Payloads
+from . import middleware
+from ..service.jwt_hand import Payloads
 
 
 

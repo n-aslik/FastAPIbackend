@@ -1,6 +1,6 @@
 from fastapi import HTTPException,status
-from schemas.books import CreateBook
-from database.dbconn import async_get_db
+from ..schemas.books import CreateBook
+from ...database.dbconn import async_get_db
 from asyncpg import Connection
 import json
 
